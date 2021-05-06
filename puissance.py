@@ -47,9 +47,8 @@ def get_index_token_positionable(npboard, length=BOARD_LENGTH, height=BOARD_HEIG
 
 def minimax(board, depth, is_red=True, length=BOARD_LENGTH, height=BOARD_HEIGHT):
     if board in tree and tree[board] != [] or depth == 0:
-        print(f'tree[board] = {tree[board]}')
+        # print(f'tree[board] = {tree[board]}')
         if depth_record[board] < depth and type(tree[board]) == list:
-            print('enter')
             for child_board in tree[board]:
                 minimax(child_board, depth - 1, not is_red, length, height)
         return
@@ -163,33 +162,41 @@ def checkState(npBoard):
 
 
 def decision(board, bot_is_red):
-    # TODO COMPLETE
-    pass
+    val, child_board = -float('inf') if bot_is_red else float('inf'), TUPLE_ORIGINAL
+    for child in tree[board]:
+        if bot_is_red and val < scores[child] or not bot_is_red and val > scores[child]:
+            val = scores[child]
+            child_board = child
+    diff = 0
+    while diff < BOARD_SIZE and child_board[diff] == board[diff]:
+        diff += 1
+    return diff
+
 
 # minimax((0,0,0,0), 2, True, 2, 2)
 # minimax((0,0,1,0), 2, True, 2, 2)
-minimax(TUPLE_ORIGINAL, 3)
-count = 0
-for k, v in tree.items():
-    count += 1
-print(tree)
-print(scores)
-print(count)
-
-minimax((
-                  EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
-                  EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
-                  EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
-                  EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
-                  EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
-                  EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
-                  EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
-                  RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
-                 ), 3)
-count = 0
-for k, v in tree.items():
-    count += 1
-print(tree)
-print(scores)
-print(count)
+minimax(TUPLE_ORIGINAL, 5)
+# count = 0
+# for k, v in tree.items():
+#     count += 1
+# print(tree)
+# print(scores)
+# print(count)
+#
+# minimax((
+#                   EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+#                   EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+#                   EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+#                   EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+#                   EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+#                   EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+#                   EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+#                   RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+#                  ), 3)
+# count = 0
+# for k, v in tree.items():
+#     count += 1
+# print(tree)
+# print(scores)
+# print(count)
 
