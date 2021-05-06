@@ -1,6 +1,9 @@
 import numpy as np
+import random
+
 tree = {}  # tuple: [tuple] | int
 scores = {}  # tuple: int
+depth_record = {}  # tuple: int
 RED_TOKEN = 1
 YELLOW_TOKEN = -1
 EMPTY_CELL = 0
@@ -17,9 +20,6 @@ TUPLE_ORIGINAL = (
                   EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
                   EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
                  )
-# TUPLE_ORIGINAL = (
-#     EMPTY_CELL, EMPTY_CELL,
-#     EMPTY_CELL, EMPTY_CELL,)
 
 # [0 , 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 , 10, 11]
 # [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
@@ -51,17 +51,90 @@ def test():
                   RED_TOKEN, EMPTY_CELL, YELLOW_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, YELLOW_TOKEN, EMPTY_CELL, RED_TOKEN, RED_TOKEN, EMPTY_CELL, EMPTY_CELL,
                  )) == [60, 85, 74, 87, 88, 89, 78, 91, 80, 69, 94, 95])
 
-    # CheckState tests
+
+def test2():
+    '''
+    npBoard = tuple_to_array(TUPLE_ORIGINAL);
+    print("Diagonale 1")
+    print(makeDiagonal(npBoard))
+    print("Diagonale 2 : inverse")
+    print(makeDiagonal(npBoard[:,::-1]))
+    print("Diagonale 3 : transposée")
+    print(makeDiagonal(npBoard.T))
+    print("Diagonale 4 : transposée inverse")
+    print(makeDiagonal(npBoard.T[:,::-1]))
+
+    npBoard = tuple_to_array(TUPLE_ORIGINAL);
+    print("verticale trace : ")
+    print(makeVertical(npBoard[:,::-1]))'''
+
     assert (checkState((
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
         RED_TOKEN, RED_TOKEN, RED_TOKEN, RED_TOKEN, RED_TOKEN, RED_TOKEN, RED_TOKEN, RED_TOKEN, EMPTY_CELL, EMPTY_CELL,
         EMPTY_CELL, EMPTY_CELL,
+    )) == RED_TOKEN)
+
+    assert (checkState((
         EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
         EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
         EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
         EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
         EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
         EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+    )) == RED_TOKEN)
+
+    assert (checkState((
         EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+    )) == RED_TOKEN)
+
+    assert (checkState((
+        RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
         EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
         EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
         EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
@@ -74,8 +147,23 @@ def test():
     assert (checkState((
         EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
         EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
         RED_TOKEN, RED_TOKEN, RED_TOKEN, RED_TOKEN, RED_TOKEN, RED_TOKEN, RED_TOKEN, RED_TOKEN, EMPTY_CELL, EMPTY_CELL,
         EMPTY_CELL, EMPTY_CELL,
+    )) == RED_TOKEN)
+
+    assert (checkState((
         EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
         EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
         EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
@@ -87,6 +175,67 @@ def test():
         EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
         EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
         EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        RED_TOKEN, RED_TOKEN, RED_TOKEN, RED_TOKEN, RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        RED_TOKEN, YELLOW_TOKEN, RED_TOKEN, RED_TOKEN, YELLOW_TOKEN, RED_TOKEN, RED_TOKEN, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+    )) == RED_TOKEN)
+
+    assert (checkState((
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+    )) == RED_TOKEN)
+
+    assert (checkState((
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+    )) == RED_TOKEN)
+
+    assert (checkState((
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+        EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
         EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
     )) == RED_TOKEN)
 
@@ -113,8 +262,9 @@ def array_to_tuple(array_to_update):
     return tuple(one_dimensional_array)
 
 
-# def value_of_tuple_from_x_y(tuple_to_search, x, y, length=BOARD_LENGTH):
-#     return tuple_to_search[y*length+x]
+def heuristic():
+    # TODO complete by heuristeam ¯\_(ツ)_/¯
+    return random.random()*2-1
 
 
 def get_index_token_positionable(board, length=BOARD_LENGTH, height=BOARD_HEIGHT):
@@ -127,12 +277,14 @@ def get_index_token_positionable(board, length=BOARD_LENGTH, height=BOARD_HEIGHT
             if board_array[y, x] == EMPTY_CELL:
                 indexes.append(y*length+x)
                 break
-    # print(indexes)
     return indexes
 
 
 def minimax(board, depth, is_red=True, length=BOARD_LENGTH, height=BOARD_HEIGHT):
     if board in tree or depth == 0:
+        if depth_record[board] < depth and type(tree[board]) == list:
+            for child_board in tree[board]:
+                minimax(child_board, depth - 1, not is_red, length, height)
         return
     # state = check_state(board)
     # if type(state) == int:
@@ -142,77 +294,148 @@ def minimax(board, depth, is_red=True, length=BOARD_LENGTH, height=BOARD_HEIGHT)
     # else:
     #     tree[board] = []
     tree[board] = []
+    depth_record[board] = depth
+    # S'il s'agit d'une feuille non terminale
+    if depth == 1:
+        val = heuristic()
+        tree[board] = val
+        scores[board] = val
+        return
     # TODO calculate score
-    # score = -float('inf') if is_red else float('inf')
-    # TODO changer parcours
+    score = -float('inf') if is_red else float('inf')
     for i in get_index_token_positionable(board, length, height):
         # Modification du tuple pour inscrire la case dans laquelle on joue
         child_board = update_tuple(board, i, RED_TOKEN if is_red else YELLOW_TOKEN)
 
         tree[board].append(child_board)
         minimax(child_board, depth-1, not is_red, length, height)
-        # score = max(score, scores[child_board]) if is_red else min(score, scores[child_board])
-    # scores[board] = score
+        score = max(score, scores[child_board]) if is_red else min(score, scores[child_board])
+    scores[board] = score
+
+
+def checkHorizontal(npBoard):
+    h, l = npBoard.shape
+
+    for i in range(h):
+        redT = 0
+        yelT = 0
+        for j in range(l):
+            if npBoard[i, j] == RED_TOKEN:
+                redT += 1
+                yelT = 0
+            elif npBoard[i, j] == YELLOW_TOKEN:
+                redT = 0
+                yelT += 1
+            else:
+                redT = 0
+                yelT = 0
+            if redT == 5:
+                return RED_TOKEN
+            elif yelT == 5:
+                return YELLOW_TOKEN
+
+    return 0
+
+
+def checkVertical(npBoard):
+    h, l = npBoard.shape
+
+    for j in range(l):
+        redT = 0
+        yelT = 0
+        for i in range(h):
+            if npBoard[i, j] == RED_TOKEN:
+                redT += 1
+                yelT = 0
+            elif npBoard[i, j] == YELLOW_TOKEN:
+                redT = 0
+                yelT += 1
+            else:
+                break
+            if redT == 5:
+                return RED_TOKEN
+            elif yelT == 5:
+                return YELLOW_TOKEN
+
+    return 0
+
+
+def checkDiagonal(npBoard):
+    h, l = npBoard.shape
+    for i0 in range(h - 4):
+        redT = 0
+        yelT = 0
+        for k in range(min(h - i0, l)):
+            i = i0 + k
+            j = k
+            if npBoard[i, j] == RED_TOKEN:
+                redT += 1
+                yelT = 0
+            elif npBoard[i, j] == YELLOW_TOKEN:
+                redT = 0
+                yelT += 1
+            else:
+                redT = 0
+                yelT = 0
+            if redT == 5:
+                return RED_TOKEN
+            elif yelT == 5:
+                return YELLOW_TOKEN
+    return 0
+
+
+def makeDiagonal(npBoard):
+    h, l = npBoard.shape
+    for i0 in range(h - 4):
+        redT = 0
+        yelT = 0
+        for k in range(min(h - i0, l)):
+            i = i0 + k
+            j = k
+            npBoard[i, j] = RED_TOKEN
+    return npBoard
+
+
+def makeVertical(npBoard):
+    h, l = npBoard.shape
+
+    for j in range(l):
+        redT = 0
+        yelT = 0
+        for i in range(h):
+            npBoard[i, j] = RED_TOKEN
+            print(npBoard)
+    return npBoard
 
 
 def checkState(board):
-    # lines
-    for i in range(BOARD_HEIGHT):
-        for j in range(BOARD_LENGTH):
-            if j + 4 >= BOARD_LENGTH:
-                break
+    npBoard = tuple_to_array(board)
 
-            case = i * BOARD_LENGTH + j
-            if board[case] == board[case + 1] and board[case + 1] == board[case + 2] and board[case + 2] == board[
-                case + 3] and board[case + 3] == board[case + 4] and board[case] != EMPTY_CELL:
-                return board[case]
+    resultat = checkHorizontal(npBoard) or checkVertical(npBoard[::-1, :]) or checkDiagonal(npBoard) or checkDiagonal(
+        npBoard[:, ::-1]) or checkDiagonal(npBoard.T) or checkDiagonal(npBoard.T[:, ::-1])
 
-    # columns
-    for j in range(BOARD_LENGTH):
-        for i in range(BOARD_HEIGHT):
+    if resultat:
+        return resultat
 
-            if i + 4 >= BOARD_HEIGHT:
-                break
-
-            case = i * BOARD_LENGTH + j
-            if board[case] == board[case + 1 * BOARD_LENGTH] and board[case + 1 * BOARD_LENGTH] == board[
-                case + 2 * BOARD_LENGTH] and board[case + 2 * BOARD_LENGTH] == board[case + 3 * BOARD_LENGTH] and board[
-                case + 3 * BOARD_LENGTH] == board[case + 4 * BOARD_LENGTH] and board[case] != EMPTY_CELL:
-                return board[case]
-
-    # diagonales
-    for i in range(BOARD_HEIGHT):
-        for j in range(3, BOARD_LENGTH):
-            if j + 4 >= BOARD_LENGTH or i + 4 >= BOARD_HEIGHT:
-                break
-
-            case = i * BOARD_LENGTH + j
-            if board[case] == board[case + 1 * BOARD_LENGTH + 1] and board[case + 1 * BOARD_LENGTH + 1] == board[
-                case + 2 * BOARD_LENGTH + 2] and board[case + 2 * BOARD_LENGTH + 2] == board[
-                case + 3 * BOARD_LENGTH + 3] and board[case + 3 * BOARD_LENGTH + 3] == board[
-                case + 4 * BOARD_LENGTH + 4] and board[case] != EMPTY_CELL:
-                return board[case]
-
-            if board[case] == board[case + 1 * BOARD_LENGTH - 1] and board[case + 1 * BOARD_LENGTH - 1] == board[
-                case + 2 * BOARD_LENGTH - 2] and board[case + 2 * BOARD_LENGTH - 2] == board[
-                case + 3 * BOARD_LENGTH - 3] and board[case + 3 * BOARD_LENGTH - 3] == board[
-                case + 4 * BOARD_LENGTH - 4] and board[case] != EMPTY_CELL:
-                return board[case]
-
-    return
+    for i in range(BOARD_SIZE):
+        if EMPTY_CELL == board[i]:
+            return None
+    return EMPTY_CELL
 
 
 def decision(board, bot_is_red):
+    # TODO COMPLETE
     pass
 
 
-test()
+# test()
+test2()
 minimax((0,0,0,0), 2, True, 2, 2)
-# minimax((0,0,0,0,0,0), True, 3, 2)
-# minimax((0,0), True, 2,1)
+minimax((0,0,1,0), 2, True, 2, 2)
 count = 0
 for k, v in tree.items():
     count += 1
 print(tree)
+print(scores)
 print(count)
 
