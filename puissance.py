@@ -1,3 +1,4 @@
+import numpy as np
 tree = {}  # tuple: [tuple] | int
 scores = {}  # tuple: int
 RED_TOKEN = 1
@@ -31,9 +32,9 @@ TUPLE_ORIGINAL = (
 
 
 def test():
-    assert (tuple_to_array((1, 0, -1, 0), 2, 2) == [[1, 0], [-1, 0]])
-    assert (tuple_to_array((1, 0, -1, 0, 1, 1), 3, 2) == [[1, 0, -1], [0, 1, 1]])
-    assert (tuple_to_array(TUPLE_ORIGINAL) == [[EMPTY_CELL for _ in range(BOARD_LENGTH)] for _ in range(BOARD_HEIGHT)])
+    assert ((tuple_to_array((1, 0, -1, 0), 2, 2) == [[1, 0], [-1, 0]]).all())
+    assert ((tuple_to_array((1, 0, -1, 0, 1, 1), 3, 2) == [[1, 0, -1], [0, 1, 1]]).all())
+    assert ((tuple_to_array(TUPLE_ORIGINAL) == [[EMPTY_CELL for _ in range(BOARD_LENGTH)] for _ in range(BOARD_HEIGHT)]).all())
 
     assert (array_to_tuple([[1, 0], [-1, 0]]) == (1, 0, -1, 0))
     assert (array_to_tuple([[1, 0, -1], [0, 1, 1]]) == (1, 0, -1, 0, 1, 1))
@@ -101,7 +102,7 @@ def tuple_to_array(tuple_to_update, length=BOARD_LENGTH, height=BOARD_HEIGHT):
     list_returned = [[] for _ in range(height)]
     for i, v in enumerate(tuple_to_update):
         list_returned[i // length].append(v)
-    return list_returned
+    return np.array(list_returned)
 
 
 def array_to_tuple(array_to_update):
@@ -118,19 +119,20 @@ def array_to_tuple(array_to_update):
 
 def get_index_token_positionable(board, length=BOARD_LENGTH, height=BOARD_HEIGHT):
     indexes = []
-    board_to_list = tuple_to_array(board, length, height)
+    board_array = tuple_to_array(board, length, height)
     for x in range(length):
         for y in range(height-1, -1, -1):
-            # print((x, y, y*length+x, board_to_list[y][x]))
-            if board_to_list[y][x] == EMPTY_CELL:
+            # print((x, y))
+            # print(y*length+x, board_array[y, x])
+            if board_array[y, x] == EMPTY_CELL:
                 indexes.append(y*length+x)
                 break
     # print(indexes)
     return indexes
 
 
-def minimax(board, is_red=True, length=BOARD_LENGTH, height=BOARD_HEIGHT):
-    if board in tree:
+def minimax(board, depth, is_red=True, length=BOARD_LENGTH, height=BOARD_HEIGHT):
+    if board in tree or depth == 0:
         return
     # state = check_state(board)
     # if type(state) == int:
@@ -148,7 +150,7 @@ def minimax(board, is_red=True, length=BOARD_LENGTH, height=BOARD_HEIGHT):
         child_board = update_tuple(board, i, RED_TOKEN if is_red else YELLOW_TOKEN)
 
         tree[board].append(child_board)
-        minimax(child_board, not is_red, length, height)
+        minimax(child_board, depth-1, not is_red, length, height)
         # score = max(score, scores[child_board]) if is_red else min(score, scores[child_board])
     # scores[board] = score
 
@@ -205,7 +207,9 @@ def decision(board, bot_is_red):
 
 
 test()
-minimax((0,0,0,0), True, 2, 2)
+minimax((0,0,0,0), 2, True, 2, 2)
+# minimax((0,0,0,0,0,0), True, 3, 2)
+# minimax((0,0), True, 2,1)
 count = 0
 for k, v in tree.items():
     count += 1
