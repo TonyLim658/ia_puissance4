@@ -36,3 +36,25 @@ BOARD_ORIGINAL = np.array(
 # [60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71]
 # [72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83]
 # [84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95]
+
+
+def update_tuple(tuple_to_update, index, val):
+    tuple_updated = list(tuple_to_update)
+    tuple_updated[index] = val
+    tuple_updated = tuple(tuple_updated)
+    return tuple_updated
+
+
+def tuple_to_array(tuple_to_update, length=BOARD_LENGTH, height=BOARD_HEIGHT):
+    list_returned = [[] for _ in range(height)]
+    for i, v in enumerate(tuple_to_update):
+        list_returned[i // length].append(v)
+    return np.array(list_returned)
+
+
+def array_to_tuple(array_to_update):
+    one_dimensional_array = []
+    for row in array_to_update:
+        for cell in row:
+            one_dimensional_array.append(cell)
+    return tuple(one_dimensional_array)
