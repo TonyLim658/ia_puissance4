@@ -10,7 +10,7 @@ def get_index_token_positionable(npboard, length=BOARD_LENGTH, height=BOARD_HEIG
     for x in range(length):
         for y in range(height-1, -1, -1):
             if npboard[y, x] == EMPTY_CELL:
-                indexes.append(y*length+x)
+                indexes.append((y*length+x, (x, y)))
                 break
     return indexes
 
@@ -28,7 +28,7 @@ def minimax(board, depth, alpha, beta, is_red=True):
         scores[board] = val
         return val
     value = -float('inf') if is_red else float('inf')
-    for i in get_index_token_positionable(npboard):
+    for i, positions in get_index_token_positionable(npboard):
         child_board = update_tuple(board, i, RED_TOKEN if is_red else YELLOW_TOKEN)
         if child_board in scores:
             value = scores[child_board]
@@ -48,17 +48,20 @@ def minimax(board, depth, alpha, beta, is_red=True):
     return value
 
 
-# # TODO adapter au tree qui a été supprimé
-# def decision(board, bot_is_red):
-#     val, child_board = -float('inf') if bot_is_red else float('inf'), TUPLE_ORIGINAL
-#     for child in tree[board]:
-#         if bot_is_red and val < scores[child] or not bot_is_red and val > scores[child]:
-#             val = scores[child]
-#             child_board = child
-#     diff = 0
-#     while diff < BOARD_SIZE and child_board[diff] == board[diff]:
-#         diff += 1
-#     return diff
+def decision(np_board, bot_is_red):
+    """
+    :param np_board: board of the game of type numpy array
+    :param bot_is_red: true if the bot is red false is the bot is yello
+    :return: tuple (x,y) positions
+    """
+    val, positions_token = -float('inf') if bot_is_red else float('inf'), (-1, -1)
+    tuple_board = array_to_tuple(np_board)
+    for i, positions in get_index_token_positionable(np_board):
+        child_board = update_tuple(tuple_board, i, RED_TOKEN if bot_is_red else YELLOW_TOKEN)
+        if bot_is_red and val < scores[child_board] or not bot_is_red and val > scores[child_board]:
+            val = scores[child_board]
+            positions_token = positions
+    return positions_token
 
 
 if __name__ == "__main__":
