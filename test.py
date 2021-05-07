@@ -101,7 +101,7 @@ def test_check_state():
                          [EMPTY_CELL,  EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL]]
                                     )) == RED_TOKEN)
 
-    assert (checkState(BOARD_ORIGINAL) is None)
+    assert (checkState(BOARD_ORIGINAL) == UNFINISHED_STATE)
 
     assert (checkState(np.array(
                         [[RED_TOKEN,    YELLOW_TOKEN, RED_TOKEN,    YELLOW_TOKEN, RED_TOKEN,    YELLOW_TOKEN, RED_TOKEN,    YELLOW_TOKEN, RED_TOKEN,    YELLOW_TOKEN, RED_TOKEN,    YELLOW_TOKEN],
@@ -123,7 +123,7 @@ def test_check_state():
                          [EMPTY_CELL,  EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL],
                          [EMPTY_CELL,  EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL],
                          [RED_TOKEN,  EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL]]
-                                    )) is None)
+                                    )) == UNFINISHED_STATE)
 
 
 def test_heuristic():
