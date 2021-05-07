@@ -31,7 +31,7 @@ def array_to_tuple(array_to_update):
 
 ########## EURISITIQUE###########
 def gen_score(rge=12):
-    assert (rge >= 5)
+    assert (rge >= 4)
     t_last_iter = [((0, 0, 0, 0), 0), ((1, 0, 0, 0), 0.1), ((1, 1, 0, 0), 0.2), ((1, 1, 1, 0), 0.3),
                    ((1, 1, 1, 1), 0.4), ((1, 1, 0, 1), 0.3), ((1, 0, 1, 0), 0.2), ((1, 0, 1, 1), 0.3),
                    ((1, 0, 0, 1), 0.2), ((0, 1, 0, 0), 0.1), ((0, 1, 1, 0), 0.2), ((0, 1, 1, 1), 0.3),
@@ -93,8 +93,6 @@ def heurHorizontal(npBoard):
                 else:
                     RED_BOX.append(val)
                     YELLOW_BOX.append(val)
-
-
     return score
 
 def heurVertical(npBoard):
@@ -135,10 +133,7 @@ def heurVertical(npBoard):
                         RED_BOX.append(val)
                     if lenR >= 5:
                         score += BLOCK_SCORE_RED[tuple(RED_BOX)]
-
                 break
-
-
     return score
 
 def heurDiagonal(npBoard):
@@ -215,18 +210,18 @@ def minimax(board, depth, is_red=True, length=BOARD_LENGTH, height=BOARD_HEIGHT)
     state = checkState(npboard)
     # print(state, npboard)
     if type(state) == int:
+        # Il s'agit d'une feuille terminale
         tree[board] = state
         scores[board] = state
         return
-    else:
-        tree[board] = []
+    tree[board] = []
     depth_record[board] = depth
-    # S'il s'agit d'une feuille non terminale
     if depth == 1:
+        # Il s'agit d'une feuille non terminale
         val = heuristic(npboard)
-        tree[board] = []
         scores[board] = val
         return
+    # Il s'agit d'une branche
     score = -float('inf') if is_red else float('inf')
     for i in get_index_token_positionable(npboard, length, height):
         # Modification du tuple pour inscrire la case dans laquelle on joue
@@ -336,4 +331,27 @@ def decision(board, bot_is_red):
 if __name__ == "__main__":
     print('main launching')
     gen_score()
-    minimax(TUPLE_ORIGINAL, 5)
+    minimax(TUPLE_ORIGINAL, 2)
+    count = 0
+    for k, v in tree.items():
+        count += 1
+    print(tree)
+    print(scores)
+    print(count)
+
+    minimax((
+                      EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+                      EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+                      EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+                      EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+                      EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+                      EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+                      EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+                      RED_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL,
+                     ), 2)
+    count = 0
+    for k, v in tree.items():
+        count += 1
+    print(tree)
+    print(scores)
+    print(count)
