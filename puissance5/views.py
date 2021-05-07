@@ -75,8 +75,9 @@ def playerTurn(cellType, position):
     return gameplayUpdate(cellType, position)
 
 
-def botTurn(isFirst, cellType, position):
-    return gameplayUpdate(cellType, position)
+def botTurn(cellType):
+    position = decision(cellType, True)
+    return [position, gameplayUpdate(cellType, position)]
 
 
 def askForBegin():
@@ -92,22 +93,57 @@ def play(request):
     column = int(request.POST.get('col', None))
     line = int(request.POST.get('line', None))
     token = request.POST.get('token', None)
+    vsia = request.POST.get('vsia', None)
 
     if token == "RED_TOKEN" :
         res = playerTurn(RED_TOKEN, [line, column])
-        token = "YELLOW_TOKEN"
+        if vsia:
+            res2 = botTurn(YELLOW_TOKEN)
+
+            data = {
+                'message': res[0],
+                'state': res[1],
+                'botMessage': res2[1][0],
+                'botState': res2[1][1],
+                'botPosI': res2[0][0],
+                'botPosJ': res2[0][1],
+                'botToken': "YELLOW_TOKEN",
+                'token': token
+            }
+
+        else :
+            token = "YELLOW_TOKEN"
+
+            data = {
+                'message': res[0],
+                'state': res[1],
+                'token': token
+            }
     else :
         res = playerTurn(YELLOW_TOKEN, [line, column])
-        token = "RED_TOKEN"
+        if vsia:
+            res2 = botTurn(RED_TOKEN)
 
+            data = {
+                'message': res[0],
+                'state': res[1],
+                'botMessage': res2[1][0],
+                'botState': res2[1][1],
+                'botPosI': res2[0][0],
+                'botPosJ': res2[0][1],
+                'botToken': "RED_TOKEN",
+                'token': token
+            }
 
-    data = {
-        #'line': line,
-        #'column': column,
-        'message': res[0],
-        'state': res[1],
-        'token': token
-    }
+        else:
+            token = "RED_TOKEN"
+
+            data = {
+                'message': res[0],
+                'state': res[1],
+                'token': token
+            }
+
 
     return JsonResponse(data)
 

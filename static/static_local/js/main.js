@@ -1,3 +1,5 @@
+vsia = false;
+
 
 /*******Fonction pour vérifier que le token peut être envoyé dans l'entete*********/
 function csrfSafeMethod(method) {
@@ -55,15 +57,18 @@ function tokenPress(column) {
                 type: 'POST',
                 url: './play',
                 data: {
+                    vsia: vsia,
                     col: column,
                     line: line,
                     token: token,
                 },
                 success: function (data) {
 
+                    //stateG 1 : fin de partie ; 2 : tour suivant ; 3 : rejouer
+
                     console.log(data)
 
-                    //stateG 1 : fin de partie ; 2 : tour suivant ; 3 : rejouer
+
                     $('#messageBox').text(data.message);
 
                     if (data.state == 1){
@@ -91,6 +96,12 @@ function tokenPress(column) {
                         $('.pos.btn').addClass('YELLOW_TOKEN');
                     }
 
+                    if (vsia){
+
+                        simulateBotPlaying(data.botPosJ, data.botMessage, data.botState, data.botToken)
+                    }
+
+
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                     alert("Status: " + textStatus); alert("Error: " + errorThrown);
@@ -103,6 +114,48 @@ function tokenPress(column) {
 
 };
 
+function simulateBotPlaying(column, message, state, token)
+{
+    var lastCase = null;
+
+    $('.placement.pos.'+column).ogni(function(i, obj) {
+        class_name = $(this).attr('class');
+        if (class_name == 'placement pos '+column) {
+            if (lastCase != null){
+                lastCase.removeClass(token);
+            }
+            lastCase = $(this);
+            lastCase.addClass(token);
+        }
+    }, 25);
+
+    $('#messageBox').text(data.message);
+
+    if (data.state == 1){
+
+    }
+    else if(data.state == 2){
+
+    }
+    else{
+
+    }
+
+    if(token == "RED_TOKEN"){
+        $('.view.pos.RED_TOKEN').addClass('active');
+        $('.view.pos.YELLOW_TOKEN').removeClass('active');
+
+        $('.pos.btn').removeClass('YELLOW_TOKEN');
+        $('.pos.btn').addClass('RED_TOKEN');
+    }
+    else{
+        $('.view.pos.YELLOW_TOKEN').addClass('active');
+        $('.view.pos.RED_TOKEN').removeClass('active');
+
+        $('.pos.btn').removeClass('RED_TOKEN');
+        $('.pos.btn').addClass('YELLOW_TOKEN');
+    }
+}
 
 reloadGame = function (){
 
@@ -136,6 +189,12 @@ reloadGame = function (){
         }
 
       });
+}
+
+gameVsIa = function (){
+    vsia = true;
+    reloadGame();
+    $('#whoBegin').modal('show');
 }
 
 
