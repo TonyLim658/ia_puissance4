@@ -21,7 +21,7 @@ def minimax(board, depth, alpha, beta, is_red=True):
     if depth == 0 or state != UNFINISHED_STATE:
         if state != UNFINISHED_STATE:
             # Il s'agit d'une feuille terminale
-            scores[board] = state
+            scores[board] = state * 1000
             return state
         # Il s'agit d'une feuille non terminale
         val = heuristic(npboard)
