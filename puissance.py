@@ -1,5 +1,3 @@
-import numpy as np
-import random
 from utils import *
 
 tree = {}  # tuple: [tuple] | int
@@ -7,6 +5,7 @@ scores = {}  # tuple: int
 depth_record = {}  # tuple: int
 BLOCK_SCORE_YELLOW = {}
 BLOCK_SCORE_RED = {}
+
 
 def update_tuple(tuple_to_update, index, val):
     tuple_updated = list(tuple_to_update)
@@ -29,23 +28,28 @@ def array_to_tuple(array_to_update):
             one_dimensional_array.append(cell)
     return tuple(one_dimensional_array)
 
+
 ########## EURISITIQUE###########
 def gen_score(rge=12):
     assert (rge >= 5)
-    t_last_iter = [((0, 0, 0, 0), 0), ((1, 0, 0, 0), 0.1), ((1, 1, 0, 0), 0.2), ((1, 1, 1, 0), 0.3), ((1, 1, 1, 1), 0.4), ((1, 1, 0, 1), 0.3), ((1, 0, 1, 0), 0.2), ((1, 0, 1, 1), 0.30000000000000004), ((1, 0, 0, 1), 0.2), ((0, 1, 0, 0), 0.1), ((0, 1, 1, 0), 0.2), ((0, 1, 1, 1), 0.3), ((0, 1, 0, 1), 0.2), ((0, 0, 1, 0), 0.1), ((0, 0, 1, 1), 0.2), ((0, 0, 0, 1), 0.1)]
+    t_last_iter = [((0, 0, 0, 0), 0), ((1, 0, 0, 0), 0.1), ((1, 1, 0, 0), 0.2), ((1, 1, 1, 0), 0.3),
+                   ((1, 1, 1, 1), 0.4), ((1, 1, 0, 1), 0.3), ((1, 0, 1, 0), 0.2), ((1, 0, 1, 1), 0.3),
+                   ((1, 0, 0, 1), 0.2), ((0, 1, 0, 0), 0.1), ((0, 1, 1, 0), 0.2), ((0, 1, 1, 1), 0.3),
+                   ((0, 1, 0, 1), 0.2), ((0, 0, 1, 0), 0.1), ((0, 0, 1, 1), 0.2), ((0, 0, 0, 1), 0.1)]
+
     for i in range(4, rge):
-        local_count = 0
-        t = []
-        for k, v in t_last_iter:
-            t.append(([0] + list(k), v))
-            t.append(([1] + list(k), v + 0.1))
-            local_count += 2
-        for k, v in t:
-            #on applique un facteur pour que les tableaux correspondent aux valeurs des pions
-            # -1 fois le tableaux -1 fois le score
-            BLOCK_SCORE_RED[tuple([item * RED_TOKEN for item in k])] = v * RED_TOKEN
-            BLOCK_SCORE_YELLOW[tuple([item * YELLOW_TOKEN for item in k])] = v * YELLOW_TOKEN
-        t_last_iter = t
+            local_count = 0
+            t = []
+            for k, v in t_last_iter:
+                t.append(([0] + list(k), v))
+                t.append(([1] + list(k), v + 0.1))
+                local_count += 2
+            for k, v in t:
+                #on applique un facteur pour que les tableaux correspondent aux valeurs des pions
+                # -1 fois le tableaux -1 fois le score
+                BLOCK_SCORE_RED[tuple([item * RED_TOKEN for item in k])] = v * RED_TOKEN
+                BLOCK_SCORE_YELLOW[tuple([item * YELLOW_TOKEN for item in k])] = v * YELLOW_TOKEN
+            t_last_iter = t
 
 
 def heurHorizontal(npBoard):
@@ -329,6 +333,7 @@ def decision(board, bot_is_red):
     return diff
 
 
-gen_score()
-minimax(TUPLE_ORIGINAL, 5)
-
+if __name__ == "__main__":
+    print('main launching')
+    gen_score()
+    minimax(TUPLE_ORIGINAL, 5)
