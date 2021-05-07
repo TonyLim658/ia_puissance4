@@ -1,4 +1,4 @@
-from Puissance import *
+from .Puissance import *
 
 
 def test_array_tuple_manipulation():

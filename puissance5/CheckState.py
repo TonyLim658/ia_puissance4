@@ -1,4 +1,4 @@
-from Utils import *
+from .Utils import *
 
 
 def _check_horizontal(np_board):

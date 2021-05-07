@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style type="text/css">
+    body{
+        margin: 0px;
+        background: url({% static "img/wood2.jpg" %});
+        background-size: cover;
+    }
+    #messageBox{
+        align-self: center;
+        margin-left: 20px;
+        color: white;
+    }
+    .pos {
+        width: 4.5vw;
+        height: 4.5vw;
+        border-radius: 100px;
+        border: 2px solid white;
+        background: url({% static "img/woodPart.PNG" %});
+    }
+    .RED_TOKEN {
+        background: red;
+    }
+    .YELLOW_TOKEN {
+        background: #b7b702;
+    }
+
+    #reloadBtn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+    }
+</style>
+
+<div class="show">
+    <div class="view pos RED_TOKEN active">
+    </div>
+
+    <div class="view pos YELLOW_TOKEN">
+    </div>
+
+    <h1 id="messageBox">Au tour des rouges de jouer</h1>
+</div>
+
+{% csrf_token %}
+
+<button type="button" class="btn btn-light" id="reloadBtn" onclick="reloadGame()"><i class="fas fa-sync-alt"></i></button>
+
+<div class="chooseBtnContent">
+
+    {% for j in jColumns %}
+        <div class="pos btn RED_TOKEN" onclick="tokenPress({{ j }})"></div>
+    {% endfor %}
+
+</div>
+
+<div class="mainCt">
+    <table>
+        {% for i in iLines %}
+            <tr class="line {{ i }}">
+                {% for j in jColumns %}
+                    <td class="column">
+                        <div class="placement pos {{ j }}"></div>
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

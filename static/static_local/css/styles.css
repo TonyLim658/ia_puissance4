@@ -1,0 +1,81 @@
+.line, .column {
+    border: 0px;
+    background: #9a8279;
+}
+
+.pos {
+    width: 4.5vw;
+    height: 4.5vw;
+    border-radius: 100px;
+    border: 2px solid #39399c;
+    background: #fff;
+}
+
+#messageBox{
+    align-self: center;
+    margin-left: 20px;
+    color: white;
+}
+
+.RED_TOKEN {
+    background: red;
+}
+.YELLOW_TOKEN {
+    background: yellow;
+}
+.pos.active{
+    border: 3px solid green;
+}
+.show{
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    background: #6b402f;
+}
+
+.show > .pos{
+    margin: 15px;
+}
+
+.mainCt{
+    margin-top: 30px;
+    width: 100vw;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    position: relative;
+    z-index: 1;
+}
+
+.chooseBtnContent{
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    top: 50px;
+    position: relative;
+    z-index: 0;
+}
+
+.pos.btn{
+    margin: 1px;
+    cursor: pointer;
+}
+
+.pos.btn:hover{
+    border-color: white;
+}
+.pos.btn.RED_TOKEN:hover{
+    background: #e66868;
+}
+.pos.btn.YELLOW_TOKEN:hover{
+    background: #f9f973;
+}
+
+table{
+    border: 25px #6b402f solid;
+}

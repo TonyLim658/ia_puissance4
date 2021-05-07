@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+	<head>
+	    <title>{% block title %}PUISSANCE 5 VS IA{% endblock %}</title>
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8" />
+        <meta description="Puissance 5 avec IA">
+	    <link rel="icon" type="image/png" href="{% block icon %}{% static "img/p5bot-ico.png" %}{% endblock %}" />
+	    <link rel="shortcut icon" type="image/png" href="{% block icon2 %}{% static "img/p5bot-ico.png" %}{% endblock %}" />
+	    {% block bts_css %}
+	    <link rel="stylesheet" type="text/css" href="{% static "css/bootstrap.css" %}">
+	    <link rel="stylesheet" type="text/css" href="{% static "css/bootstrap-grid.css" %}">
+	    <link rel="stylesheet" type="text/css" href="{% static "css/bootstrap-reboot.css" %}">
+	    <link rel="stylesheet" type="text/css" href="{% static "css/fontAwesome5.css" %}">
+	    <link rel="stylesheet" type="text/css" href="{% static "css/styles.css"%}">
+	    {% endblock %}
+	</head>
+	<body >
+
+
+        <!-- Modal -->
+		<div class="modal fade" id="inviteUserModal" tabindex="-1" role="dialog" aria-labelledby="inviteUserModal" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="inviteUserModalTitle">Invitation d'un ami</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+
+		      	{% csrf_token %}
+                  <div class="row" id="invite_receive" style="justify-content: center">
+                      <span id="usersource1"></span>&nbsp;vous a envoyé une demande d'ami&nbsp;
+                    <button value="accept|" id="acceptinvitefr" class="accept_friend_realtime connectBtn iconBtn"><i class="fas fa-user-check"></i></button>
+                    <button value="deny|" id="denyinvitefr" class="accept_friend_realtime connectBtn iconBtn"><i class="fas fa-user-times"></i></button>
+                  </div>
+                    <div class="row" id="invite_send" style="justify-content: center">
+                      <span id="usersource2"></span>&nbsp;à&nbsp;<span id="answerinvite"></span>&nbsp;votre invitation.
+                  </div>
+
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+
+        {% block content %}
+
+        {% endblock %}
+
+
+        {% block bts_js %}
+        <script type="text/javascript" src="{% static "js/jquery-3.4.1.min.js" %}"></script>
+
+        <script type="text/javascript" src="{% static "js/popper.min.js"%}"></script>
+        <script type="text/javascript" src="{% static "js/jquery-ui.js"%}"></script>
+        <script type="text/javascript" src="{% static "js/bootstrap.bundle.js"%}"></script>
+        <script type="text/javascript" src="{% static "js/bootstrap.js"%}"></script>
+        <script type="text/javascript" src="{% static "js/main.js"%}"></script>
+        {% endblock %}
+        {% block js_per_page %}
+        {% endblock %}
+
+	</body>
+</html>

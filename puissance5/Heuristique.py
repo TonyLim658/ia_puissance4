@@ -1,4 +1,4 @@
-from Utils import *
+from .Utils import *
 
 BLOCK_SCORE_YELLOW = {}
 BLOCK_SCORE_RED = {}

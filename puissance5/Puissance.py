@@ -1,6 +1,6 @@
-from Utils import *
-from Heuristique import heuristic, gen_score
-from CheckState import check_state
+from .Utils import *
+from .Heuristique import heuristic, gen_score
+from .CheckState import check_state
 
 scores = {}  # tuple: int
 
