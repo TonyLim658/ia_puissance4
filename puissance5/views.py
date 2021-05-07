@@ -14,6 +14,7 @@ BLOCK_SCORE_YELLOW = {}
 BLOCK_SCORE_RED = {}
 
 GAME_BOARD = np.copy(BOARD_ORIGINAL)
+gen_score()
 
 def handler404(request, exception):
     return render(request, "errors/404.html")
@@ -76,7 +77,7 @@ def playerTurn(cellType, position):
 
 
 def botTurn(cellType):
-    position = decision(cellType, True)
+    position = decision(GAME_BOARD, cellType)
     return [position, gameplayUpdate(cellType, position)]
 
 
