@@ -69,6 +69,9 @@ function tokenPress(column) {
                     console.log(data)
 
                     if (data.state == 1){
+
+                        $('.pos.btn').addClass('hidden');
+
                         if (vsia){
                             if(botbegin){
                                 if (data.stateEOG == -1){
@@ -295,14 +298,25 @@ reloadGame = function (ia=false,begin=false){
                 vsia = ia;
                 botbegin = begin;
 
-                $('#messageBox').text("Au tour du joueur rouge jouer ! ");
-
                 $('.view.pos.RED_TOKEN').addClass('active');
                 $('.view.pos.YELLOW_TOKEN').removeClass('active');
 
                 $('.pos.btn').removeClass('YELLOW_TOKEN');
                 $('.pos.btn').removeClass('hidden');
                 $('.pos.btn').addClass('RED_TOKEN');
+
+                if(ia){
+                    if (begin){
+                        $('#messageBox').text("Le robot commencer ! ");
+                        simulateBotPlaying("RED_TOKEN");
+                    }
+                    else {
+                        $('#messageBox').text("Vous pouvez commencer ! ");
+                    }
+                }
+                else{
+                    $('#messageBox').text("Au tour du joueur rouge jouer ! ");
+                }
             }
 
         },
@@ -313,9 +327,16 @@ reloadGame = function (ia=false,begin=false){
       });
 }
 
-gameVsIa = function (botPos){
-    reloadGame(true, botPos);
+gameVsIa = function (){
     $('#whoBegin').modal('show');
+}
+
+iaBegin = function (botPos){
+    reloadGame(true, botPos);
+}
+
+gameVsPlayer = function (){
+    reloadGame(false, false);
 }
 
 

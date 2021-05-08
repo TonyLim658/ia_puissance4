@@ -36,6 +36,10 @@
     .hidden{
         visibility: hidden;
     }
+
+    #pvp, #vsia{
+        margin: 4px;
+    }
 </style>
 
 <div class="show">
@@ -52,7 +56,8 @@
 
 <button type="button" class="btn btn-light" id="reloadBtn" onclick="reloadGame()"><i class="fas fa-sync-alt"></i></button>
 
-<button type="button" class="btn btn-light" id="vsia" onclick="gameVsIa(false)"><i class="fas fa-robot"></i>&nbsp;VS IA</button>
+<button type="button" class="btn btn-light" id="vsia" onclick="gameVsIa()"><i class="fas fa-robot"></i>&nbsp;PvIA</button>
+<button type="button" class="btn btn-light" id="pvp" onclick="gameVsPlayer()"><i class="far fa-handshake"></i>&nbsp;PvP</button>
 
 <div class="chooseBtnContent">
 
