@@ -5,7 +5,7 @@ from .CheckState import check_state
 scores = {}  # tuple: int
 
 
-def get_index_token_positionable(npboard, length=BOARD_LENGTH, height=BOARD_HEIGHT):
+def _get_index_token_positionable(npboard, length=BOARD_LENGTH, height=BOARD_HEIGHT):
     indexes = []
     for x in range(length):
         for y in range(height-1, -1, -1):
@@ -15,7 +15,7 @@ def get_index_token_positionable(npboard, length=BOARD_LENGTH, height=BOARD_HEIG
     return indexes
 
 
-def minimax(tuple_board, depth, alpha, beta, is_red):
+def _minimax(tuple_board, depth, alpha, beta, is_red):
     npboard = tuple_to_array(tuple_board)
     state = check_state(npboard)
     if depth == 0 or state != UNFINISHED_STATE:
@@ -29,12 +29,12 @@ def minimax(tuple_board, depth, alpha, beta, is_red):
         scores[tuple_board] = val
         return val
     value = -float('inf') if is_red else float('inf')
-    for i, positions in get_index_token_positionable(npboard):
+    for i, positions in _get_index_token_positionable(npboard):
         child_board = update_tuple(tuple_board, i, RED_TOKEN if is_red else YELLOW_TOKEN)
         if child_board in scores:
             value = scores[child_board]
         else:
-            minimax_value = minimax(child_board, depth - 1, alpha, beta, not is_red)
+            minimax_value = _minimax(child_board, depth - 1, alpha, beta, not is_red)
             value = max(value, minimax_value) if is_red else min(value, minimax_value)
             scores[child_board] = value
         if is_red:
@@ -55,13 +55,13 @@ def decision(np_board, token, depth=4):
     :param np_board: board of the game of type numpy array
     :param token: RED_TOKEN if the bot is red YELLOW_TOKEN if the bot is yellow
     :param depth: height of the tree for the minimax algorithm set at 5 by default
-    :return: tuple (y,x) positions
+    :return: tuple (y,x) positions where the bot wants to play
     """
     bot_is_red = token == RED_TOKEN
     val, positions_token = -float('inf') if bot_is_red else float('inf'), (-1, -1)
     tuple_board = array_to_tuple(np_board)
-    minimax(tuple_board, depth, -float('inf'), float('inf'), bot_is_red)
-    for i, positions in get_index_token_positionable(np_board):
+    _minimax(tuple_board, depth, -float('inf'), float('inf'), bot_is_red)
+    for i, positions in _get_index_token_positionable(np_board):
         child_board = update_tuple(tuple_board, i, token)
         if child_board not in scores:
             continue

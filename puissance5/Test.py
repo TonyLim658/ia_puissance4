@@ -1,3 +1,4 @@
+from puissance5.Puissance import _get_index_token_positionable
 from .Puissance import *
 
 
@@ -9,8 +10,8 @@ def test_array_tuple_manipulation():
     assert (array_to_tuple([[1, 0], [-1, 0]]) == (1, 0, -1, 0))
     assert (array_to_tuple([[1, 0, -1], [0, 1, 1]]) == (1, 0, -1, 0, 1, 1))
 
-    assert (get_index_token_positionable(BOARD_ORIGINAL) == [84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95])
-    assert (get_index_token_positionable(np.array(
+    assert (_get_index_token_positionable(BOARD_ORIGINAL) == [84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95])
+    assert (_get_index_token_positionable(np.array(
                         [[EMPTY_CELL,  EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL],
                          [EMPTY_CELL,  EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL],
                          [EMPTY_CELL,  EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL],
