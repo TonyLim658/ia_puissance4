@@ -27,6 +27,7 @@ urlpatterns = [
     path('', views.game, name='game'),
 
     re_path(r'play$', views.play, name="play"),
+    re_path(r'bot_playing', views.playBot, name="bot_playing"),
     re_path(r'reload$', views.restart, name="reload"),
 
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root':settings.STATIC_ROOT}),

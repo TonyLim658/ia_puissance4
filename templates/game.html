@@ -32,6 +32,10 @@
         top: 5px;
         right: 5px;
     }
+
+    .hidden{
+        visibility: hidden;
+    }
 </style>
 
 <div class="show">
@@ -41,14 +45,14 @@
     <div class="view pos YELLOW_TOKEN">
     </div>
 
-    <h1 id="messageBox">Au tour des rouges de jouer</h1>
+    <h1 id="messageBox">Au tour du joueur rouge de jouer</h1>
 </div>
 
 {% csrf_token %}
 
 <button type="button" class="btn btn-light" id="reloadBtn" onclick="reloadGame()"><i class="fas fa-sync-alt"></i></button>
 
-<button type="button" class="btn btn-light" id="vsia" onclick="gameVsIa()"><i class="fas fa-robot"></i>&nbsp;VS IA</button>
+<button type="button" class="btn btn-light" id="vsia" onclick="gameVsIa(false)"><i class="fas fa-robot"></i>&nbsp;VS IA</button>
 
 <div class="chooseBtnContent">
 

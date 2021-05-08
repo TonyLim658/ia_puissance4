@@ -36,19 +36,6 @@ def isPositionable(positionX, positionY):
     else:
         return False
 
-
-def endOfTheGame(state):
-    if state == EMPTY_CELL:
-        message = "Egalité. Rejouez!"
-        return message
-    elif state == YELLOW_TOKEN:
-        message = "Les jaunes gagnent la partie ! "
-        return message
-    else:
-        message = "Les rouges gagnent la partie ! "
-        return message
-
-
 def gameplayUpdate(typeCell, position):
 
     #stateG 1 : fin de partie ; 2 : tour suivant ; 3 : rejouer
@@ -58,18 +45,18 @@ def gameplayUpdate(typeCell, position):
 
         state = check_state(GAME_BOARD)
         if state != UNFINISHED_STATE:
-            message = endOfTheGame(state)
+            stateEOG = state
             stateG = 1
         else :
-            message = "Au tour du joueur suivant."
+            stateEOG = -2
             stateG = 2
 
-        return [message, stateG]
+        return [stateEOG, stateG]
 
     else:
-        message = "Position impossible. Jouez un autre coup."
+        stateEOG = -2
         stateG = 3
-        return [message, stateG]
+        return [stateEOG, stateG]
 
 
 def playerTurn(cellType, position):
@@ -81,70 +68,48 @@ def botTurn(cellType):
     return [position, gameplayUpdate(cellType, position)]
 
 
-def askForBegin():
-    ans = input("Do you want to start? (y/n) : ")
-    if ans == "y":
-        return False
-    elif ans == "n":
-        return True
-    else:
-        return askForBegin()
-
 def play(request):
     column = int(request.POST.get('col', None))
     line = int(request.POST.get('line', None))
     token = request.POST.get('token', None)
-    vsia = request.POST.get('vsia', None)
 
     if token == "RED_TOKEN" :
         res = playerTurn(RED_TOKEN, [line, column])
-        if vsia == "true":
-            res2 = botTurn(YELLOW_TOKEN)
+        token = "YELLOW_TOKEN"
 
-            data = {
-                'message': res[0],
-                'state': res[1],
-                'botMessage': res2[1][0],
-                'botState': res2[1][1],
-                'botPosI': res2[0][0],
-                'botPosJ': res2[0][1],
-                'botToken': "YELLOW_TOKEN",
-                'token': token
-            }
-
-        else :
-            token = "YELLOW_TOKEN"
-
-            data = {
-                'message': res[0],
-                'state': res[1],
-                'token': token
-            }
     else :
         res = playerTurn(YELLOW_TOKEN, [line, column])
-        if vsia == "true":
-            res2 = botTurn(RED_TOKEN)
+        token = "RED_TOKEN"
 
-            data = {
-                'message': res[0],
-                'state': res[1],
-                'botMessage': res2[1][0],
-                'botState': res2[1][1],
-                'botPosI': res2[0][0],
-                'botPosJ': res2[0][1],
-                'botToken': "RED_TOKEN",
-                'token': token
-            }
 
-        else:
-            token = "RED_TOKEN"
+    data = {
+        'stateEOG': res[0],
+        'state': res[1],
+        'token': token
+    }
 
-            data = {
-                'message': res[0],
-                'state': res[1],
-                'token': token
-            }
+    return JsonResponse(data)
 
+def playBot(request):
+    token = request.POST.get('token', None)
+
+    if token == "RED_TOKEN" :
+        res = botTurn(RED_TOKEN)
+        token = "YELLOW_TOKEN"
+
+    else :
+        res = botTurn(YELLOW_TOKEN)
+        token = "RED_TOKEN"
+
+
+
+    data = {
+        'stateEOG': res[1][0],
+        'state': res[1][1],
+        'posI': res[0][0],
+        'posJ': res[0][1],
+        'token': token
+    }
 
     return JsonResponse(data)
 
