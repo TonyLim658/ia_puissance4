@@ -88,6 +88,7 @@ def check_state(np_board):
 
     if resultat:
         return resultat
+    winning_positions.clear()
 
     if (np_board == 0).any():
         return UNFINISHED_STATE
