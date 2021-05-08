@@ -1,6 +1,6 @@
 from .Utils import *
 from .Heuristique import heuristic, gen_score
-from .CheckState import check_state
+from .CheckState import check_state, winning_positions
 
 scores = {}  # tuple: int
 COEFFICIENT_STATE = 100

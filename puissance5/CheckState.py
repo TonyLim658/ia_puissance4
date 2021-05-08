@@ -2,6 +2,7 @@ from .Utils import *
 
 winning_positions = []
 
+
 def _check_horizontal(np_board):
     h, l = np_board.shape
 
