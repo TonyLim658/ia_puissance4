@@ -38,29 +38,6 @@
     margin: 15px;
 }
 
-.mainCt{
-    margin-top: 30px;
-    width: 100vw;
-
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-
-    position: relative;
-    z-index: 1;
-}
-
-.chooseBtnContent{
-    width: 100vw;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-
-    top: 50px;
-    position: relative;
-    z-index: 0;
-}
-
 .pos.btn{
     margin: 1px;
     cursor: pointer;

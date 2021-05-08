@@ -22,6 +22,16 @@ $.fn.ogni = function (f, t) {
     return this
 }
 
+showVictory = function(winArray){
+    console.log(winArray)
+    $.each(winArray, function () {
+        line = this[0];
+        column = this[1];
+
+        $('.line.'+line).find('.placement.pos.'+column).addClass('winToken');
+    });
+}
+
 /*******recherche/affichage de résultat d'un algo par ajax*********/
 function tokenPress(column) {
 
@@ -74,6 +84,7 @@ function tokenPress(column) {
                     if (data.state == 1){
 
                         $('.pos.btn').addClass('hidden');
+                        showVictory(JSON.parse(data.winPos));
 
                         if (vsia){
                             if(botbegin){
@@ -225,6 +236,9 @@ function simulateBotPlaying(token)
             }, 25*nbLines)
 
             if (data.state == 1){
+
+                showVictory(JSON.parse(data.winPos));
+
                 if(botbegin){
                     if (data.stateEOG == -1){
                         $('#messageBox').text("Vous avez gagné ! ");
@@ -302,6 +316,7 @@ reloadGame = function (ia=false,begin=false){
                 $('.placement').each(function(i, obj) {
                     $(this).removeClass('RED_TOKEN');
                     $(this).removeClass('YELLOW_TOKEN');
+                    $(this).removeClass('winToken');
                 });
 
                 vsia = ia;

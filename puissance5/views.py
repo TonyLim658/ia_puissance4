@@ -7,6 +7,8 @@ from django.shortcuts import render
 
 from .Puissance import *
 
+import json
+
 tree = {}  # tuple: [tuple] | int
 scores = {}  # tuple: int
 depth_record = {}  # tuple: int
@@ -85,7 +87,8 @@ def play(request):
     data = {
         'stateEOG': res[0],
         'state': res[1],
-        'token': token
+        'token': token,
+        'winPos': json.dumps(winning_positions)
     }
 
     return JsonResponse(data)
@@ -108,7 +111,8 @@ def playBot(request):
         'state': res[1][1],
         'posI': res[0][0],
         'posJ': res[0][1],
-        'token': token
+        'token': token,
+        'winPos': json.dumps(winning_positions)
     }
 
     return JsonResponse(data)
