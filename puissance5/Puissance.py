@@ -3,6 +3,7 @@ from .Heuristique import heuristic, gen_score
 from .CheckState import check_state
 
 scores = {}  # tuple: int
+COEFFICIENT_STATE = 100
 
 
 def _get_index_token_positionable(npboard, length=BOARD_LENGTH, height=BOARD_HEIGHT):
@@ -10,7 +11,7 @@ def _get_index_token_positionable(npboard, length=BOARD_LENGTH, height=BOARD_HEI
     for x in range(length):
         for y in range(height-1, -1, -1):
             if npboard[y, x] == EMPTY_CELL:
-                indexes.append((y*length+x, (y, x)))
+                indexes.append((y*length+x, [y, x]))
                 break
     return indexes
 
@@ -22,8 +23,9 @@ def _minimax(tuple_board, depth, alpha, beta, is_red):
         # Je suis une feuille
         if state != UNFINISHED_STATE:
             # Il s'agit d'une feuille terminale
-            scores[tuple_board] = state * 1000  # [-1000, 0, 1000]
-            return state
+            state_coeff = state * COEFFICIENT_STATE
+            scores[tuple_board] = state_coeff  # [-100, 0, 100]
+            return state_coeff
         # Il s'agit d'une feuille non terminale
         val = heuristic(npboard)
         scores[tuple_board] = val
@@ -32,7 +34,7 @@ def _minimax(tuple_board, depth, alpha, beta, is_red):
     for i, positions in _get_index_token_positionable(npboard):
         child_board = update_tuple(tuple_board, i, RED_TOKEN if is_red else YELLOW_TOKEN)
         if child_board in scores:
-            value = scores[child_board]
+            value = max(value, scores[child_board]) if is_red else min(value, scores[child_board])
         else:
             minimax_value = _minimax(child_board, depth - 1, alpha, beta, not is_red)
             value = max(value, minimax_value) if is_red else min(value, minimax_value)
@@ -49,16 +51,16 @@ def _minimax(tuple_board, depth, alpha, beta, is_red):
     return value
 
 
-def decision(np_board, token, depth=4):
+def decision(np_board, token, depth=5):
     """
     return the position of the decision where the bot want to play his token
     :param np_board: board of the game of type numpy array
     :param token: RED_TOKEN if the bot is red YELLOW_TOKEN if the bot is yellow
     :param depth: height of the tree for the minimax algorithm set at 5 by default
-    :return: tuple (y,x) positions where the bot wants to play
+    :return: array [y,x] positions where the bot wants to play
     """
     bot_is_red = token == RED_TOKEN
-    val, positions_token = -float('inf') if bot_is_red else float('inf'), (-1, -1)
+    val, positions_token, child_board = -float('inf') if bot_is_red else float('inf'), (-1, -1), TUPLE_ORIGINAL
     tuple_board = array_to_tuple(np_board)
     _minimax(tuple_board, depth, -float('inf'), float('inf'), bot_is_red)
     for i, positions in _get_index_token_positionable(np_board):
