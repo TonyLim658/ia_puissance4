@@ -84,7 +84,7 @@ def play(request):
         'stateEOG': res[0],
         'state': res[1],
         'token': token,
-        'winPos': json.dumps(winning_positions)
+        'winPos': json.dumps(winning_positions[-5:])
     }
 
     return JsonResponse(data)
@@ -108,7 +108,7 @@ def playBot(request):
         'posI': res[0][0],
         'posJ': res[0][1],
         'token': token,
-        'winPos': json.dumps(winning_positions)
+        'winPos': json.dumps(winning_positions[-5:])
     }
 
     return JsonResponse(data)

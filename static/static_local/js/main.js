@@ -92,7 +92,7 @@ function tokenPress(column) {
                                     $('#messageBox').text("Vous avez gagné ! ");
                                 }
                                 else if(data.stateEOG == 0){
-                                    $('#messageBox').text("Vous avez égalité ! ");
+                                    $('#messageBox').text("Vous avez fait égalité ! ");
                                 }
                                 else{
                                     $('#messageBox').text("Le robot a gagné ! ");
@@ -103,7 +103,7 @@ function tokenPress(column) {
                                     $('#messageBox').text("Le robot a gagné ! ");
                                 }
                                 else if(data.stateEOG == 0){
-                                    $('#messageBox').text("Vous avez égalité ! ");
+                                    $('#messageBox').text("Vous avez fait égalité ! ");
                                 }
                                 else{
                                     $('#messageBox').text("Vous avez gagné ! ");
@@ -112,13 +112,13 @@ function tokenPress(column) {
                         }
                         else {
                             if (data.stateEOG == -1){
-                                $('#messageBox').text("Le joueur jaune à gagné ! ");
+                                $('#messageBox').text("Le joueur jaune a gagné ! ");
                             }
                             else if(data.stateEOG == 0){
-                                $('#messageBox').text("Vous avez égalité ! ");
+                                $('#messageBox').text("Vous avez fait égalité ! ");
                             }
                             else{
-                                $('#messageBox').text("Le joueur rouge à gagné ! ");
+                                $('#messageBox').text("Le joueur rouge a gagné ! ");
                             }
                         }
 
@@ -151,7 +151,7 @@ function tokenPress(column) {
 
                             if(data.token == "RED_TOKEN"){
 
-                                $('#messageBox').text("Au tour du joueur rouge jouer ! ");
+                                $('#messageBox').text("Au tour du joueur rouge de jouer ! ");
 
                                 $('.view.pos.RED_TOKEN').addClass('active');
                                 $('.view.pos.YELLOW_TOKEN').removeClass('active');
@@ -161,7 +161,7 @@ function tokenPress(column) {
                             }
                             else{
 
-                                $('#messageBox').text("Au tour du joueur jaune jouer ! ");
+                                $('#messageBox').text("Au tour du joueur jaune de jouer ! ");
 
                                 $('.view.pos.YELLOW_TOKEN').addClass('active');
                                 $('.view.pos.RED_TOKEN').removeClass('active');

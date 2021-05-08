@@ -6,9 +6,10 @@ winning_positions = []
 def _check_horizontal(np_board):
     h, l = np_board.shape
 
-    for i in range(h):
+    for i in range(h - 1, -1, -1):
         redT = 0
         yelT = 0
+        winning_positions.clear()
         for j in range(l):
             if np_board[i, j] == RED_TOKEN:
                 winning_positions.append([i, j])
@@ -19,7 +20,6 @@ def _check_horizontal(np_board):
                 redT = 0
                 yelT += 1
             else:
-                winning_positions.clear()
                 redT = 0
                 yelT = 0
             if redT == 5:
@@ -35,7 +35,8 @@ def _check_vertical(np_board):
     for j in range(l):
         redT = 0
         yelT = 0
-        for i in range(h):
+        winning_positions.clear()
+        for i in range(h - 1, -1, -1):
             if np_board[i, j] == RED_TOKEN:
                 winning_positions.append([i, j])
                 redT += 1
@@ -45,7 +46,6 @@ def _check_vertical(np_board):
                 redT = 0
                 yelT += 1
             else:
-                winning_positions.clear()
                 break
             if redT == 5:
                 return RED_TOKEN
@@ -59,6 +59,7 @@ def _check_diagonal(np_board):
     for i0 in range(h - 4):
         redT = 0
         yelT = 0
+        winning_positions.clear()
         for k in range(min(h - i0, l)):
             i = i0 + k
             j = k
@@ -71,7 +72,6 @@ def _check_diagonal(np_board):
                 redT = 0
                 yelT += 1
             else:
-                winning_positions.clear()
                 redT = 0
                 yelT = 0
             if redT == 5:
@@ -82,10 +82,9 @@ def _check_diagonal(np_board):
 
 
 def check_state(np_board):
-    resultat = _check_horizontal(np_board) or _check_vertical(np_board[::-1, :]) or _check_diagonal(
-        np_board) or _check_diagonal(
-        np_board[:, ::-1]) or _check_diagonal(np_board.T[1:, :]) or _check_diagonal(np_board[:, -2::-1].T)
-
+    resultat = _check_horizontal(np_board) or _check_vertical(np_board) \
+               or _check_diagonal(np_board) or _check_diagonal(np_board[:, ::-1]) \
+               or _check_diagonal(np_board.T[1:, :]) or _check_diagonal(np_board[:, -2::-1].T)
     if resultat:
         return resultat
     winning_positions.clear()
