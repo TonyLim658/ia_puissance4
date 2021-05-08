@@ -16,8 +16,7 @@ def _get_index_token_positionable(npboard, length=BOARD_LENGTH, height=BOARD_HEI
     return indexes
 
 
-def _minimax(tuple_board, depth, alpha, beta, is_red):
-    npboard = tuple_to_array(tuple_board)
+def _minimax(tuple_board, npboard, depth, alpha, beta, is_red):
     state = check_state(npboard)
     if depth == 0 or state != UNFINISHED_STATE:
         # Je suis une feuille
@@ -32,13 +31,15 @@ def _minimax(tuple_board, depth, alpha, beta, is_red):
         return val
     value = -float('inf') if is_red else float('inf')
     for i, positions in _get_index_token_positionable(npboard):
+        npboard[positions] = RED_TOKEN if is_red else YELLOW_TOKEN
         child_board = update_tuple(tuple_board, i, RED_TOKEN if is_red else YELLOW_TOKEN)
         if child_board in scores:
             value = max(value, scores[child_board]) if is_red else min(value, scores[child_board])
         else:
-            minimax_value = _minimax(child_board, depth - 1, alpha, beta, not is_red)
+            minimax_value = _minimax(child_board, npboard, depth - 1, alpha, beta, not is_red)
             value = max(value, minimax_value) if is_red else min(value, minimax_value)
             scores[child_board] = value
+        npboard[positions] = EMPTY_CELL
         if is_red:
             alpha = max(alpha, value)
             if alpha >= beta:
@@ -60,17 +61,17 @@ def decision(np_board, token, depth=5):
     :return: tuple (y,x) positions where the bot wants to play
     """
     bot_is_red = token == RED_TOKEN
-    val, positions_token, child_board = -float('inf') if bot_is_red else float('inf'), (-1, -1), TUPLE_ORIGINAL
+    val, positions_token = -float('inf') if bot_is_red else float('inf'), (-1, -1)
     tuple_board = array_to_tuple(np_board)
-    _minimax(tuple_board, depth, -float('inf'), float('inf'), bot_is_red)
+    _minimax(tuple_board, np_board, depth, -float('inf'), float('inf'), bot_is_red)
     for i, positions in _get_index_token_positionable(np_board):
         child_board = update_tuple(tuple_board, i, token)
-        print(f'{i, positions} in scores is {child_board in scores}, '
-              f'{scores[child_board] if child_board in scores else ""}')
-        if child_board not in scores:
-            continue
         child_score = scores[child_board]
         if bot_is_red and val < child_score or not bot_is_red and val > child_score:
             val = child_score
             positions_token = positions
     return positions_token
+
+
+gen_score()
+_minimax(TUPLE_ORIGINAL, BOARD_ORIGINAL, 5, -float('inf'), float('inf'), True)
