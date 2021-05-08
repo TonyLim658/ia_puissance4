@@ -9,14 +9,8 @@ from .Puissance import *
 
 import json
 
-tree = {}  # tuple: [tuple] | int
-scores = {}  # tuple: int
-depth_record = {}  # tuple: int
-BLOCK_SCORE_YELLOW = {}
-BLOCK_SCORE_RED = {}
-
 GAME_BOARD = np.copy(BOARD_ORIGINAL)
-gen_score()
+
 
 def handler404(request, exception):
     return render(request, "errors/404.html")
@@ -24,6 +18,7 @@ def handler404(request, exception):
 
 def handler500(request):
     return render(request, "errors/500.html")
+
 
 def game(request):
     global GAME_BOARD
@@ -37,6 +32,7 @@ def isPositionable(positionX, positionY):
         return True
     else:
         return False
+
 
 def gameplayUpdate(typeCell, position):
 
