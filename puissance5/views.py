@@ -98,7 +98,7 @@ def play(request):
 
     if token == "RED_TOKEN" :
         res = playerTurn(RED_TOKEN, [line, column])
-        if vsia:
+        if vsia == "true":
             res2 = botTurn(YELLOW_TOKEN)
 
             data = {
@@ -122,7 +122,7 @@ def play(request):
             }
     else :
         res = playerTurn(YELLOW_TOKEN, [line, column])
-        if vsia:
+        if vsia == "true":
             res2 = botTurn(RED_TOKEN)
 
             data = {
