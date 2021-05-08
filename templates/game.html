@@ -9,6 +9,15 @@
         background-size: cover;
     }
 
+    .show > .pos{
+        display: none;
+    }
+
+    table{
+        border: 15px #6b402f solid;
+    }
+
+
     .pos {
         width: 4.5vw;
         max-width: 55px;
@@ -17,6 +26,7 @@
         border-radius: 100px;
         border: 2px solid white;
         background: url({% static "img/woodPart.PNG" %});
+        padding: 0;
     }
 
 
@@ -55,17 +65,33 @@
         color: white;
     }
 
-    .mainCt{
-        top: -10px;
-        width: 100vw;
+    @media (max-width: 1000px) {
+      .mainCt{
+            top: calc(25px - 4.5vw);
+            width: 100vw;
 
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
 
-        position: relative;
-        z-index: 1;
+            position: relative;
+            z-index: 1;
+        }
     }
+    @media (min-width: 1000px) {
+      .mainCt{
+            top: -10px;
+            width: 100vw;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+
+            position: relative;
+            z-index: 1;
+        }
+    }
+
 
     .chooseBtnContent{
         width: 100vw;
