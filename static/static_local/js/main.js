@@ -1,5 +1,6 @@
 vsia = false;
 botbegin = false;
+nbLines = 8;
 
 /*******Fonction pour vérifier que le token peut être envoyé dans l'entete*********/
 function csrfSafeMethod(method) {
@@ -28,6 +29,8 @@ function tokenPress(column) {
 
     var line = 0;
     var lastCase = null;
+
+    $('#posBtn'+column).addClass('hiddenPlus');
 
     $('.placement.pos.'+column).ogni(function(i, obj) {
         class_name = $(this).attr('class');
@@ -157,6 +160,8 @@ function tokenPress(column) {
                             }
 
                         }
+
+                        if (line != 0) $('#posBtn'+column).removeClass('hiddenPlus');
                     }
                     else{
                         $('#messageBox').text("Position impossible, vous devez rejouer un autre coup ! ");
@@ -168,7 +173,7 @@ function tokenPress(column) {
                 }
 
               });
-        }, 25*8);
+        }, 25*nbLines);
 
 
 
@@ -202,7 +207,7 @@ function simulateBotPlaying(token)
 
             var column = data.posJ;
             var lastCase = null;
-
+            var line = 0;
             $('.placement.pos.'+column).ogni(function(i, obj) {
                 class_name = $(this).attr('class');
                 if (class_name == 'placement pos '+column) {
@@ -211,9 +216,13 @@ function simulateBotPlaying(token)
                     }
                     lastCase = $(this);
                     lastCase.addClass(token);
+                    line = i;
                 }
             }, 25);
 
+            setTimeout(function () {
+                if (line == 0) $('#posBtn'+column).addClass('hiddenPlus');
+            }, 25*nbLines)
 
             if (data.state == 1){
                 if(botbegin){
@@ -303,6 +312,7 @@ reloadGame = function (ia=false,begin=false){
 
                 $('.pos.btn').removeClass('YELLOW_TOKEN');
                 $('.pos.btn').removeClass('hidden');
+                $('.pos.btn').removeClass('hiddenPlus');
                 $('.pos.btn').addClass('RED_TOKEN');
 
                 if(ia){

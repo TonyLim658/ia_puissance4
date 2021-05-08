@@ -37,6 +37,10 @@
         visibility: hidden;
     }
 
+    .hiddenPlus{
+        visibility: hidden;
+    }
+
     #pvp, #vsia{
         margin: 4px;
     }
@@ -62,7 +66,7 @@
 <div class="chooseBtnContent">
 
     {% for j in jColumns %}
-        <div class="pos btn RED_TOKEN" onclick="tokenPress({{ j }})"></div>
+        <div class="pos btn RED_TOKEN" id="posBtn{{ j }}" onclick="tokenPress({{ j }})"></div>
     {% endfor %}
 
 </div>
