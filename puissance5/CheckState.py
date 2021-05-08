@@ -6,7 +6,7 @@ winning_positions = []
 def _check_horizontal(np_board):
     h, l = np_board.shape
 
-    for i in range(h - 1, -1, -1):
+    for i in range(h):
         redT = 0
         yelT = 0
         winning_positions.clear()
@@ -22,9 +22,9 @@ def _check_horizontal(np_board):
             else:
                 redT = 0
                 yelT = 0
-            if redT == 5:
+            if redT == TOKEN_WINNING_NUMBER:
                 return RED_TOKEN
-            elif yelT == 5:
+            elif yelT == TOKEN_WINNING_NUMBER:
                 return YELLOW_TOKEN
     return 0
 
@@ -47,16 +47,16 @@ def _check_vertical(np_board):
                 yelT += 1
             else:
                 break
-            if redT == 5:
+            if redT == TOKEN_WINNING_NUMBER:
                 return RED_TOKEN
-            elif yelT == 5:
+            elif yelT == TOKEN_WINNING_NUMBER:
                 return YELLOW_TOKEN
     return 0
 
 
 def _check_diagonal(np_board, rotation_type):
     h, l = np_board.shape
-    for i0 in range(h - 4):
+    for i0 in range(h - (TOKEN_WINNING_NUMBER - 1)):
         redT = 0
         yelT = 0
         winning_positions.clear()
@@ -82,11 +82,9 @@ def _check_diagonal(np_board, rotation_type):
             else:
                 redT = 0
                 yelT = 0
-            if redT == 5:
-                print(rotation_type)
+            if redT == TOKEN_WINNING_NUMBER:
                 return RED_TOKEN
-            elif yelT == 5:
-                print(rotation_type)
+            elif yelT == TOKEN_WINNING_NUMBER:
                 return YELLOW_TOKEN
     return 0
 

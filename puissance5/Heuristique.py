@@ -5,13 +5,13 @@ BLOCK_SCORE_RED = {}
 
 
 def gen_score(rge=12):
-    assert (rge >= 4)
+    assert (rge >= TOKEN_WINNING_NUMBER)
     t_last_iter = [((0, 0, 0, 0), 0), ((1, 0, 0, 0), 0.1), ((1, 1, 0, 0), 0.2), ((1, 1, 1, 0), 0.3),
                    ((1, 1, 1, 1), 0.4), ((1, 1, 0, 1), 0.3), ((1, 0, 1, 0), 0.2), ((1, 0, 1, 1), 0.3),
                    ((1, 0, 0, 1), 0.2), ((0, 1, 0, 0), 0.1), ((0, 1, 1, 0), 0.2), ((0, 1, 1, 1), 0.3),
                    ((0, 1, 0, 1), 0.2), ((0, 0, 1, 0), 0.1), ((0, 0, 1, 1), 0.2), ((0, 0, 0, 1), 0.1)]
 
-    for i in range(4, rge):
+    for i in range(TOKEN_WINNING_NUMBER - 1, rge):
         local_count = 0
         t = []
         for k, v in t_last_iter:
@@ -39,7 +39,7 @@ def _heur_horizontal(np_board):
             # si on tombe sur un pion jaune
             if val == RED_TOKEN:
                 # on va voir si le fragments avec des jetons jaunes peut être exploiter
-                if len(YELLOW_BOX) >= 5:
+                if len(YELLOW_BOX) >= TOKEN_WINNING_NUMBER:
                     # exploitable donc on va chercher le score qui correspond
                     score += BLOCK_SCORE_YELLOW[tuple(YELLOW_BOX)]
 
@@ -48,7 +48,7 @@ def _heur_horizontal(np_board):
             # si on tombe sur un pion rouge
             elif val == YELLOW_TOKEN:
                 # on va voir si le fragments avec des jetons rouges peut être exploiter
-                if len(RED_BOX) >= 5:
+                if len(RED_BOX) >= TOKEN_WINNING_NUMBER:
                     # exploitable donc on va chercher le score qui correspond
                     score += BLOCK_SCORE_RED[tuple(RED_BOX)]
 
@@ -60,9 +60,9 @@ def _heur_horizontal(np_board):
                 lenR = len(RED_BOX)
                 # dans le cas où on est en fin de grille et que la ligne n'est pas remplie de 0
                 if j == l - 1:
-                    if lenY >= 5 and lenY > lenR:
+                    if lenY >= TOKEN_WINNING_NUMBER and lenY > lenR:
                         score += BLOCK_SCORE_YELLOW[tuple(YELLOW_BOX)]
-                    elif lenR >= 5 and lenR > lenY:
+                    elif lenR >= TOKEN_WINNING_NUMBER and lenR > lenY:
                         score += BLOCK_SCORE_RED[tuple(RED_BOX)]
                 else:
                     RED_BOX.append(val)
@@ -101,12 +101,12 @@ def _heur_vertical(np_board):
                 if lenY > 0:
                     for add in range(nbVides):
                         YELLOW_BOX.append(val)
-                    if lenY >= 5:
+                    if lenY >= TOKEN_WINNING_NUMBER:
                         score += BLOCK_SCORE_YELLOW[tuple(YELLOW_BOX)]
                 elif lenR > 0:
                     for add in range(nbVides):
                         RED_BOX.append(val)
-                    if lenR >= 5:
+                    if lenR >= TOKEN_WINNING_NUMBER:
                         score += BLOCK_SCORE_RED[tuple(RED_BOX)]
                 break
     return score
@@ -117,7 +117,7 @@ def _heur_diagonal(np_board):
     score = 0
 
     # le but est de regarder les scores par block au changement de couleur ou en fin de diagonale
-    for i0 in range(h - 4):
+    for i0 in range(h - (TOKEN_WINNING_NUMBER - 1)):
         RED_BOX = []
         YELLOW_BOX = []
         for k in range(min(h - i0, l)):
@@ -127,7 +127,7 @@ def _heur_diagonal(np_board):
             # si on tombe sur un pion jaune
             if val == RED_TOKEN:
                 # on va voir si le fragments avec des jetons jaunes peut être exploiter
-                if len(YELLOW_BOX) >= 5:
+                if len(YELLOW_BOX) >= TOKEN_WINNING_NUMBER:
                     # exploitable donc on va chercher le score qui correspond
                     score += BLOCK_SCORE_YELLOW[tuple(YELLOW_BOX)]
 
@@ -136,7 +136,7 @@ def _heur_diagonal(np_board):
             # si on tombe sur un pion rouge
             elif val == YELLOW_TOKEN:
                 # on va voir si le fragments avec des jetons rouges peut être exploiter
-                if len(RED_BOX) >= 5:
+                if len(RED_BOX) >= TOKEN_WINNING_NUMBER:
                     # exploitable donc on va chercher le score qui correspond
                     score += BLOCK_SCORE_RED[tuple(RED_BOX)]
 
@@ -148,9 +148,9 @@ def _heur_diagonal(np_board):
                 lenR = len(RED_BOX)
                 # dans le cas où on est en fin de grille et que la diagonale n'est pas remplie de 0
                 if j == l - 1:
-                    if lenY >= 5 and lenY > lenR:
+                    if lenY >= TOKEN_WINNING_NUMBER and lenY > lenR:
                         score += BLOCK_SCORE_YELLOW[tuple(YELLOW_BOX)]
-                    elif lenR >= 5 and lenR > lenY:
+                    elif lenR >= TOKEN_WINNING_NUMBER and lenR > lenY:
                         score += BLOCK_SCORE_RED[tuple(RED_BOX)]
                 else:
                     RED_BOX.append(val)
