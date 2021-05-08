@@ -11,7 +11,7 @@ def _get_index_token_positionable(npboard, length=BOARD_LENGTH, height=BOARD_HEI
     for x in range(length):
         for y in range(height-1, -1, -1):
             if npboard[y, x] == EMPTY_CELL:
-                indexes.append((y*length+x, [y, x]))
+                indexes.append((y*length+x, (y, x)))
                 break
     return indexes
 
@@ -57,7 +57,7 @@ def decision(np_board, token, depth=5):
     :param np_board: board of the game of type numpy array
     :param token: RED_TOKEN if the bot is red YELLOW_TOKEN if the bot is yellow
     :param depth: height of the tree for the minimax algorithm set at 5 by default
-    :return: array [y,x] positions where the bot wants to play
+    :return: tuple (y,x) positions where the bot wants to play
     """
     bot_is_red = token == RED_TOKEN
     val, positions_token, child_board = -float('inf') if bot_is_red else float('inf'), (-1, -1), TUPLE_ORIGINAL
@@ -65,6 +65,8 @@ def decision(np_board, token, depth=5):
     _minimax(tuple_board, depth, -float('inf'), float('inf'), bot_is_red)
     for i, positions in _get_index_token_positionable(np_board):
         child_board = update_tuple(tuple_board, i, token)
+        print(f'{i, positions} in scores is {child_board in scores}, '
+              f'{scores[child_board] if child_board in scores else ""}')
         if child_board not in scores:
             continue
         child_score = scores[child_board]

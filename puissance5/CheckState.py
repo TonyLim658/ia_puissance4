@@ -10,11 +10,11 @@ def _check_horizontal(np_board):
         yelT = 0
         for j in range(l):
             if np_board[i, j] == RED_TOKEN:
-                winning_positions.append((i, j))
+                winning_positions.append([i, j])
                 redT += 1
                 yelT = 0
             elif np_board[i, j] == YELLOW_TOKEN:
-                winning_positions.append((i, j))
+                winning_positions.append([i, j])
                 redT = 0
                 yelT += 1
             else:
@@ -36,11 +36,11 @@ def _check_vertical(np_board):
         yelT = 0
         for i in range(h):
             if np_board[i, j] == RED_TOKEN:
-                winning_positions.append((i, j))
+                winning_positions.append([i, j])
                 redT += 1
                 yelT = 0
             elif np_board[i, j] == YELLOW_TOKEN:
-                winning_positions.append((i, j))
+                winning_positions.append([i, j])
                 redT = 0
                 yelT += 1
             else:
@@ -62,11 +62,11 @@ def _check_diagonal(np_board):
             i = i0 + k
             j = k
             if np_board[i, j] == RED_TOKEN:
-                winning_positions.append((j, i))
+                winning_positions.append([j, i])
                 redT += 1
                 yelT = 0
             elif np_board[i, j] == YELLOW_TOKEN:
-                winning_positions.append((j, i))
+                winning_positions.append([j, i])
                 redT = 0
                 yelT += 1
             else:
