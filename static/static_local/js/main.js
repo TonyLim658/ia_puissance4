@@ -68,7 +68,7 @@ function tokenPress(column) {
     setTimeout(function () {
             $.ajax({
                 type: 'POST',
-                url: './play',
+                url: 'play',
                 data: {
                     col: column,
                     line: line,
@@ -205,7 +205,7 @@ function simulateBotPlaying(token)
 
     $.ajax({
         type: 'POST',
-        url: './bot_playing',
+        url: 'bot_playing',
         data: {
             token: token,
         },
@@ -308,7 +308,7 @@ reloadGame = function (ia=false,begin=false){
 
     $.ajax({
         type: 'POST',
-        url: './reload',
+        url: 'reload',
         data: {},
         success: function (data) {
 
