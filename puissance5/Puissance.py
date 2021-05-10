@@ -70,7 +70,6 @@ def decision(np_board, token, depth=5):
     _minimax(tuple_board, np_board, depth, -float('inf'), float('inf'), bot_is_red)
     for i, positions in _get_index_token_positionable(np_board):
         child_board = update_tuple(tuple_board, i, token)
-        print(f'{i, positions} = {scores[child_board]}')
         if scores[child_board] == scores[tuple_board]:
             break
     print(f'minimax_count = {minimax_count}')
