@@ -285,6 +285,8 @@ function simulateBotPlaying(token)
 
             }
 
+            $('#botTime').text("Au dernier coup le robot a réfléchi "+data.duration+" secondes")
+
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             alert("Status: " + textStatus); alert("Error: " + errorThrown);
@@ -293,7 +295,86 @@ function simulateBotPlaying(token)
   });
 }
 
-reloadGame = function (ia=false,begin=false){
+
+function simulateBotPlayingVsBot(token)
+{
+    /*Entrer le token csrf dans le header si la route est sécurisé*/
+      var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+      /*console.log("csrf token : "+csrftoken);*/
+      $.ajaxSetup({
+          beforeSend: function(xhr, settings) {
+              if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                  xhr.setRequestHeader("X-CSRFToken", csrftoken);
+              }
+          }
+      });
+
+    $.ajax({
+        type: 'POST',
+        url: 'bot_playing',
+        data: {
+            token: token,
+        },
+        success: function (data) {
+
+            //stateG 1 : fin de partie ; 2 : tour suivant ; 3 : rejouer
+            //stateEOG -1 : jaune ; 0 : égalité ; 1 : rouges
+
+            console.log(data)
+
+            var column = data.posJ;
+            var lastCase = null;
+            var line = 0;
+            $('.placement.pos.'+column).ogni(function(i, obj) {
+                class_name = $(this).attr('class');
+                if (class_name == 'placement pos '+column) {
+                    if (lastCase != null){
+                        lastCase.removeClass(token);
+                    }
+                    lastCase = $(this);
+                    lastCase.addClass(token);
+                    line = i;
+                }
+            }, 25);
+
+            setTimeout(function () {
+                if (line == 0) $('#posBtn'+column).addClass('hiddenPlus');
+            }, 25*nbLines)
+
+            if(data.state == 2){
+
+                simulateBotPlayingVsBot(data.token)
+
+                if(data.token == "RED_TOKEN"){
+                    $('.view.pos.RED_TOKEN').addClass('active');
+                    $('.view.pos.YELLOW_TOKEN').removeClass('active');
+
+                    $('.pos.btn').removeClass('YELLOW_TOKEN');
+                    $('.pos.btn').addClass('RED_TOKEN');
+                }
+                else{
+                    $('.view.pos.YELLOW_TOKEN').addClass('active');
+                    $('.view.pos.RED_TOKEN').removeClass('active');
+
+                    $('.pos.btn').removeClass('RED_TOKEN');
+                    $('.pos.btn').addClass('YELLOW_TOKEN');
+                }
+
+                $('.pos.btn').removeClass('hidden');
+
+            }else if(data.state == 1){ $('#messageBox').text("Fin du duel ! "); }
+
+            $('#botTime').text("Au dernier coup le robot a réfléchi "+data.duration+" secondes")
+
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert("Status: " + textStatus); alert("Error: " + errorThrown);
+        }
+
+  });
+}
+
+reloadGame = function (ia=false,begin=false, botVsBot = false){
 
     /*Entrer le token csrf dans le header si la route est sécurisé*/
       var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
@@ -331,7 +412,11 @@ reloadGame = function (ia=false,begin=false){
                 $('.pos.btn').addClass('RED_TOKEN');
 
                 if(ia){
-                    if (begin){
+                    if(botVsBot){
+                        $('#messageBox').text("");
+                        simulateBotPlayingVsBot("RED_TOKEN");
+                    }
+                    else if (begin){
                         $('#messageBox').text("Le robot commencer ! ");
                         simulateBotPlaying("RED_TOKEN");
                     }
@@ -358,6 +443,10 @@ gameVsIa = function (){
 
 iaBegin = function (botPos){
     reloadGame(true, botPos);
+}
+
+botVsbot = function (){
+    reloadGame(true, true, true);
 }
 
 gameVsPlayer = function (){

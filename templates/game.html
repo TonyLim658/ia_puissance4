@@ -9,6 +9,14 @@
         background-size: cover;
     }
 
+    .show{
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        background: #6b402f;
+    }
+
     .show > .pos{
         display: none;
     }
@@ -114,13 +122,16 @@
     </div>
 
     <h1 id="messageBox">Au tour du joueur rouge de jouer</h1>
+    <br>
+    <h3 id="botTime" style="color: white; padding-left: 5px;"></h3>
 </div>
 
 {% csrf_token %}
 
 <button type="button" class="btn btn-light" id="reloadBtn" onclick="reloadGame()"><i class="fas fa-sync-alt"></i></button>
 
-<button type="button" class="btn btn-light" id="vsia" onclick="gameVsIa()"><i class="fas fa-robot"></i>&nbsp;PvIA</button>
+<button type="button" class="btn btn-light" id="pvsia" onclick="gameVsIa()"><i class="fas fa-robot"></i>&nbsp;PvIA</button>
+<button type="button" class="btn btn-light" id="iavsia" onclick="botVsbot()"><i class="fas fa-robot"></i>&nbsp;IAvIA</button>
 <button type="button" class="btn btn-light" id="pvp" onclick="gameVsPlayer()"><i class="far fa-handshake"></i>&nbsp;PvP</button>
 
 <div class="chooseBtnContent">
