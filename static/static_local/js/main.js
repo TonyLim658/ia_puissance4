@@ -359,9 +359,7 @@ function simulateBotPlayingVsBot(token)
                     $('.pos.btn').removeClass('RED_TOKEN');
                     $('.pos.btn').addClass('YELLOW_TOKEN');
                 }
-
-                $('.pos.btn').removeClass('hidden');
-
+                
             }else if(data.state == 1){ $('#messageBox').text("Fin du duel ! "); }
 
             $('#botTime').text("Au dernier coup le robot a réfléchi "+data.duration+" secondes")
@@ -414,6 +412,7 @@ reloadGame = function (ia=false,begin=false, botVsBot = false){
                 if(ia){
                     if(botVsBot){
                         $('#messageBox').text("");
+                        $('.pos.btn').addClass('hidden');
                         simulateBotPlayingVsBot("RED_TOKEN");
                     }
                     else if (begin){
