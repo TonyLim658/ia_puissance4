@@ -5,6 +5,8 @@ from __future__ import unicode_literals
 from django.http import JsonResponse
 from django.shortcuts import render
 
+from timeit import default_timer
+
 from .Puissance import *
 
 import json
@@ -92,6 +94,8 @@ def play(request):
 def playBot(request):
     token = request.POST.get('token', None)
 
+    start = default_timer()
+
     if token == "RED_TOKEN" :
         res = botTurn(RED_TOKEN)
         token = "YELLOW_TOKEN"
@@ -100,9 +104,10 @@ def playBot(request):
         res = botTurn(YELLOW_TOKEN)
         token = "RED_TOKEN"
 
-
+    duration = default_timer() - start
 
     data = {
+        'duration': duration,
         'stateEOG': res[1][0],
         'state': res[1][1],
         'posI': res[0][0],
