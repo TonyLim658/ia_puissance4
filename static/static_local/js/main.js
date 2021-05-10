@@ -417,7 +417,7 @@ reloadGame = function (ia=false,begin=false, botVsBot = false){
                         simulateBotPlayingVsBot("RED_TOKEN");
                     }
                     else if (begin){
-                        $('#messageBox').text("Le robot commencer ! ");
+                        $('#messageBox').text("Le robot va commencer ! ");
                         simulateBotPlaying("RED_TOKEN");
                     }
                     else {
