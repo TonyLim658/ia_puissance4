@@ -285,7 +285,7 @@ function simulateBotPlaying(token)
 
             }
 
-            $('#botTime').text("Au dernier coup le robot a réfléchi "+data.duration+" secondes")
+            $('#botTime').text("Au dernier coup le robot a calculé "+data.node_count+" noeuds et réfléchi "+data.duration+" secondes")
 
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -362,7 +362,7 @@ function simulateBotPlayingVsBot(token)
 
             }else if(data.state == 1){ $('#messageBox').text("Fin du duel ! "); }
 
-            $('#botTime').text("Au dernier coup le robot a réfléchi "+data.duration+" secondes")
+            $('#botTime').text("Au dernier coup le robot a calculé "+data.node_count+" noeuds et réfléchi "+data.duration+" secondes")
 
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {

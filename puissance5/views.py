@@ -64,8 +64,8 @@ def playerTurn(request, cellType, position):
 
 def botTurn(request, cellType):
     GAME_BOARD = request.session.get("GAME_BOARD")
-    position = decision(np.array(GAME_BOARD), cellType)
-    return [position, gameplayUpdate(request, cellType, position)]
+    position, node_count = decision(np.array(GAME_BOARD), cellType)
+    return [position, gameplayUpdate(request, cellType, position), node_count]
 
 
 def play(request):
@@ -91,6 +91,7 @@ def play(request):
 
     return JsonResponse(data)
 
+
 def playBot(request):
     token = request.POST.get('token', None)
 
@@ -108,6 +109,7 @@ def playBot(request):
 
     data = {
         'duration': duration,
+        'node_count': res[2],
         'stateEOG': res[1][0],
         'state': res[1][1],
         'posI': res[0][0],
@@ -117,6 +119,7 @@ def playBot(request):
     }
 
     return JsonResponse(data)
+
 
 def restart(request):
     request.session['GAME_BOARD'] = BOARD_ORIGINAL.tolist()

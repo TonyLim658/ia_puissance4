@@ -73,7 +73,7 @@ def decision(np_board, token, depth=5):
         if scores[child_board] == scores[tuple_board]:
             break
     print(f'minimax_count = {minimax_count}')
-    return positions
+    return (positions, minimax_count)
 
 
 gen_score()
