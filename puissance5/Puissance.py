@@ -77,4 +77,3 @@ def decision(np_board, token, depth=5):
 
 
 gen_score()
-_minimax(TUPLE_ORIGINAL, BOARD_ORIGINAL, 5, -float('inf'), float('inf'), True)
