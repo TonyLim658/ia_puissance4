@@ -4,25 +4,31 @@ BLOCK_SCORE_YELLOW = {}
 BLOCK_SCORE_RED = {}
 
 
+def factoriel(n):
+    if n in [0, 1]:
+        return 1
+    if n == 2:
+        return 2
+    return factoriel(n-1) * factoriel(n-2)
+
+
 def gen_score(rge=12):
     assert (rge >= TOKEN_WINNING_NUMBER)
-    t_last_iter = [((0, 0, 0, 0), 0), ((1, 0, 0, 0), 0.1), ((1, 1, 0, 0), 0.2), ((1, 1, 1, 0), 0.3),
-                   ((1, 1, 1, 1), 0.4), ((1, 1, 0, 1), 0.3), ((1, 0, 1, 0), 0.2), ((1, 0, 1, 1), 0.3),
-                   ((1, 0, 0, 1), 0.2), ((0, 1, 0, 0), 0.1), ((0, 1, 1, 0), 0.2), ((0, 1, 1, 1), 0.3),
-                   ((0, 1, 0, 1), 0.2), ((0, 0, 1, 0), 0.1), ((0, 0, 1, 1), 0.2), ((0, 0, 0, 1), 0.1)]
+    t_last_iter = [((0, 0, 0, 0), 0), ((1, 0, 0, 0), 1), ((1, 1, 0, 0), 2), ((1, 1, 1, 0), 3),
+                   ((1, 1, 1, 1), 4), ((1, 1, 0, 1), 3), ((1, 0, 1, 0), 2), ((1, 0, 1, 1), 3),
+                   ((1, 0, 0, 1), 2), ((0, 1, 0, 0), 1), ((0, 1, 1, 0), 2), ((0, 1, 1, 1), 3),
+                   ((0, 1, 0, 1), 2), ((0, 0, 1, 0), 1), ((0, 0, 1, 1), 2), ((0, 0, 0, 1), 1)]
 
     for i in range(TOKEN_WINNING_NUMBER - 1, rge):
-        local_count = 0
         t = []
         for k, v in t_last_iter:
             t.append(([0] + list(k), v))
-            t.append(([1] + list(k), v + 0.1))
-            local_count += 2
+            t.append(([1] + list(k), v + 1))
         for k, v in t:
             # on applique un facteur pour que les tableaux correspondent aux valeurs des pions
             # -1 fois le tableaux -1 fois le score
-            BLOCK_SCORE_RED[tuple([item * RED_TOKEN for item in k])] = v * RED_TOKEN
-            BLOCK_SCORE_YELLOW[tuple([item * YELLOW_TOKEN for item in k])] = v * YELLOW_TOKEN
+            BLOCK_SCORE_RED[tuple([item * RED_TOKEN for item in k])] = factoriel(v) * RED_TOKEN
+            BLOCK_SCORE_YELLOW[tuple([item * YELLOW_TOKEN for item in k])] = factoriel(v) * YELLOW_TOKEN
         t_last_iter = t
 
 
