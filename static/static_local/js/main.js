@@ -359,7 +359,7 @@ function simulateBotPlayingVsBot(token)
                     $('.pos.btn').removeClass('RED_TOKEN');
                     $('.pos.btn').addClass('YELLOW_TOKEN');
                 }
-                
+
             }else if(data.state == 1){ $('#messageBox').text("Fin du duel ! "); }
 
             $('#botTime').text("Au dernier coup le robot a réfléchi "+data.duration+" secondes")

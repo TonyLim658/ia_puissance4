@@ -40,7 +40,7 @@ def gameplayUpdate(request, typeCell, position):
     if isPositionable(request, position[0],position[1]):
         GAME_BOARD = request.session.get("GAME_BOARD")
         GAME_BOARD[position[0]][position[1]] = typeCell
-        request.session['GAME_BOARD'] = BOARD_ORIGINAL.tolist()
+        request.session['GAME_BOARD'] = GAME_BOARD
 
         state = check_state(np.array(GAME_BOARD))
         if state != UNFINISHED_STATE:
