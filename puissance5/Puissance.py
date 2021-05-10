@@ -8,19 +8,22 @@ COEFFICIENT_STATE = float('inf')
 minimax_count = 0
 
 
-def _get_index_token_positionable(tuple_board, npboard, length=BOARD_LENGTH, height=BOARD_HEIGHT):
+def _get_index_token_positionable(tuple_board, npboard, is_red, length=BOARD_LENGTH, height=BOARD_HEIGHT):
     indexes = []
     for x in range(length):
         for y in range(height-1, -1, -1):
             if npboard[y, x] == EMPTY_CELL:
-                if tuple_board in scores_heuristic:
-                    score_heuristic = scores_heuristic[tuple_board]
+                npboard[y, x] = RED_TOKEN if is_red else YELLOW_TOKEN
+                child_tuple = update_tuple(tuple_board, y*length+x, RED_TOKEN if is_red else YELLOW_TOKEN)
+                if child_tuple in scores_heuristic:
+                    score_heuristic = scores_heuristic[child_tuple]
                 else:
                     score_heuristic = heuristic(npboard)
-                    scores_heuristic[tuple_board] = score_heuristic
-                indexes.append((y*length+x, (y, x), score_heuristic))
+                    scores_heuristic[child_tuple] = score_heuristic
+                npboard[y, x] = EMPTY_CELL
+                indexes.append((child_tuple, (y, x), score_heuristic))
                 break
-    indexes.sort(key=lambda tup: tup[2])
+    indexes.sort(key=lambda tup: tup[2], reverse=is_red)
     return indexes
 
 
@@ -46,12 +49,12 @@ def _minimax(tuple_board, npboard, depth, alpha, beta, is_red):
         scores[tuple_board] = score_heuristic
         return score_heuristic
     value = -float('inf') if is_red else float('inf')
-    for i, positions, score_heuristic in _get_index_token_positionable(tuple_board, npboard):
-        npboard[positions] = RED_TOKEN if is_red else YELLOW_TOKEN
-        child_board = update_tuple(tuple_board, i, RED_TOKEN if is_red else YELLOW_TOKEN)
-        minimax_value = _minimax(child_board, npboard, depth - 1, alpha, beta, not is_red)
+    for child_tuple, positions, score_heuristic in _get_index_token_positionable(tuple_board, npboard, is_red):
+        y, x = positions
+        npboard[y, x] = RED_TOKEN if is_red else YELLOW_TOKEN
+        minimax_value = _minimax(child_tuple, npboard, depth - 1, alpha, beta, not is_red)
         value = max(value, minimax_value) if is_red else min(value, minimax_value)
-        scores[child_board] = value
+        scores[child_tuple] = value
         npboard[positions] = EMPTY_CELL
         if is_red:
             alpha = max(alpha, value)
@@ -79,9 +82,8 @@ def decision(np_board, token, depth=5):
     tuple_board = array_to_tuple(np_board)
     scores.clear()
     _minimax(tuple_board, np_board, depth, -float('inf'), float('inf'), bot_is_red)
-    for i, positions, score_heuristic in _get_index_token_positionable(tuple_board, np_board):
-        child_board = update_tuple(tuple_board, i, token)
-        if scores[child_board] == scores[tuple_board]:
+    for child_tuple, positions, score_heuristic in _get_index_token_positionable(tuple_board, np_board, bot_is_red):
+        if scores[child_tuple] == scores[tuple_board]:
             break
     print(f'minimax_count = {minimax_count}')
     return positions, minimax_count
