@@ -20,6 +20,8 @@ def handler500(request):
 
 
 def game(request):
+    request.session.clear_expired()
+    request.session.set_expiry(0)
     request.session['GAME_BOARD'] = BOARD_ORIGINAL.tolist()
     return render(request, "game.html", {'iLines': [0,1,2,3,4,5,6,7], 'jColumns': [0,1,2,3,4,5,6,7,8,9,10,11]})
 
