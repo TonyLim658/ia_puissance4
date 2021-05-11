@@ -360,7 +360,7 @@ function simulateBotPlayingVsBot(token)
                     $('.pos.btn').addClass('YELLOW_TOKEN');
                 }
 
-            }else if(data.state == 1){ $('#messageBox').text("Fin du duel ! "); }
+            }else if(data.state == 1){ $('#messageBox').text("Fin du duel ! ");showVictory(JSON.parse(data.winPos)); }
 
             $('#botTime').text("Au dernier coup le robot a calculé "+data.node_count+" noeuds et réfléchi "+data.duration+" secondes")
 
